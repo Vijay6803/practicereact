@@ -1,0 +1,110 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id 
+  username  String    @unique
+  email     String    @unique
+  password  String
+  company   Company[]
+  contact   Contact[]
+  deals Deals[]
+  createdAt DateTime?  @default(now())
+  updatedAt DateTime?  @updatedAt
+}
+
+model Company {
+  id        String      @id 
+  name      String
+  address   String?
+  email     String?
+  phone     String?
+  website   String?
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  companycontact CompanyContact[]
+  companydeal CompanyDeal[]
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model Contact {
+  id        String    @id 
+  firstName String
+  lastName  String
+  email     String @unique
+  phone     String
+  position  String
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+  companycontact CompanyContact[]
+  contactdeal   ContactDeal[]
+ @@unique([email,userId])
+}
+
+model Deals{
+   id        String    @id
+   title String 
+   amount Float
+   lineItems LineItems[]
+   stage String @default("Prospecting")
+   closeDate DateTime?
+   user      User   @relation(fields: [userId], references: [id])
+  userId    String
+  companydeal CompanyDeal[]
+  contactdeal ContactDeal[]
+  
+  createdAt DateTime? @default(now())
+  updatedAt DateTime? @updatedAt
+}
+
+model LineItems{
+id String @id 
+deal      Deals   @relation(fields: [dealId], references: [id])
+dealId  String
+productName String
+quantity Int
+price Float 
+createdAt DateTime? @default(now())
+updatedAt DateTime? @updatedAt
+}
+
+
+model CompanyContact{
+  company Company @relation(fields: [companyId], references: [id])
+  companyId String 
+  contact Contact @relation(fields: [contactId],references: [id])
+  contactId String
+  @@unique([companyId,contactId])
+}
+
+model CompanyDeal{
+  company Company @relation(fields: [companyId], references: [id])
+  companyId String 
+  deal Deals @relation(fields: [dealId],references: [id])
+  dealId String
+  @@unique([companyId,dealId])
+}
+
+
+model ContactDeal{
+  contact Contact @relation(fields: [contactId],references: [id])
+  contactId String
+  dealId String 
+  deal Deals @relation(fields: [dealId],references: [id])
+  @@unique([contactId,dealId])
+}

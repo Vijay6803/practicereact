@@ -1,0 +1,19 @@
+-- AlterTable
+ALTER TABLE "Company" ALTER COLUMN "createdAt" DROP NOT NULL,
+ALTER COLUMN "updatedAt" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Contact" ALTER COLUMN "createdAt" DROP NOT NULL,
+ALTER COLUMN "updatedAt" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "Deals" ALTER COLUMN "createdAt" DROP NOT NULL,
+ALTER COLUMN "updatedAt" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "LineItems" ALTER COLUMN "createdAt" DROP NOT NULL,
+ALTER COLUMN "updatedAt" DROP NOT NULL;
+
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "createdAt" DROP NOT NULL,
+ALTER COLUMN "updatedAt" DROP NOT NULL;

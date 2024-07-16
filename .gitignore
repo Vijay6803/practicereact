@@ -1,2 +1,3 @@
 ./crm-frontend/node-modules
 .frontend/node_modules
+./crmbackend/node_modules
